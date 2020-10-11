@@ -93,6 +93,30 @@ function authenticateUser(collection, user, password, whenAuthenticationValid, w
   });
 }
 
+function putTag(collection, user, tag, andThen) {
+  collection.findOneAndUpdate({"user":user}, {"$set": tag}, {}, (err, result) => {
+    if (err) console.error("Put tag operation err:", err);
+    else console.log("Put tag operation:", result);
+    andThen();
+  });
+}
+
+function takeTag(collection, user, tag, andThen) {
+  const unset = {};
+  unset[tag] = "";
+  collection.findOneAndUpdate({"user":user}, {"$unset": unset}, {}, (err, result) => {
+    if (err) console.error("Take tag operation err:", err);
+    else console.log("Take tag operation:", result);
+    andThen();
+  });
+}
+
+function getTag(collection, user, tag, andThen) {
+  collection.findOne({"user":user}, (err, result) => {
+    andThen(result[tag]);
+  });
+}
+
 function updateUserCLI(user, password) {
   connectMongoDb(() => updateUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, password, closeConnection)).catch(closeConnection);
 }
@@ -113,12 +137,39 @@ function authenticateUserCLI(user, password) {
   connectMongoDb(() => authenticateUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, password, closeConnection, closeConnection)).catch(closeConnection);
 }
 
+function putTagUserCLI(...args) {
+  if (args.length < 3) return console.error("Not enough argument");
+  console.log(args);
+  const user = args[0];
+  const tagName = args[1];
+  const tagValue = args.slice(2);
+  const tag = {};
+  tag[tagName] = tagValue.length == 1 ? tagValue[0] : tagValue;
+  connectMongoDb(() => putTag(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, tag, closeConnection)).catch(closeConnection);
+}
+
+function takeTagUserCLI(user, tag) {
+  connectMongoDb(() => takeTag(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, tag, closeConnection)).catch(closeConnection);
+}
+
+function getTagUserCLI(user, tag) {
+  connectMongoDb(() => getTag(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, tag, (tagValue) => {
+    console.log(`${tag} => ${tagValue}`);
+    closeConnection();
+  })).catch(closeConnection);
+}
+
 const QUERY_TREE = {
-  "manager": {
-    "update": updateUserCLI,
+  "credential": {
     "list": listUserCLI,
+    "update": updateUserCLI,
     "remove": removeUserCLI,
     "format": formatUsersCLI
+  },
+  "tag": {
+    "put": putTagUserCLI,
+    "take": takeTagUserCLI,
+    "get": getTagUserCLI
   },
   "authenticate": authenticateUserCLI
 }
@@ -140,6 +191,9 @@ if (!module.parent){
 } else {
   module.exports = {
     updateUser: updateUser,
-    authenticateUser: authenticateUser
+    authenticateUser: authenticateUser,
+    putTag: putTag,
+    takeTag: takeTag,
+    getTag: getTag
   };
 }
