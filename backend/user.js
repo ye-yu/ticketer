@@ -32,17 +32,13 @@ function closeConnection(err) {
   console.log("Disconnected from the server");
 }
 
-function addUser(username, password) {
-  console.log(username, password);
-}
-
 function hash512(password, salt){
   let hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
   hash.update(password);
   return hash.digest('hex');
 };
 
-function listUser() {
+function listUserQuery() {
   const db = MONGO_CLIENT.db(MONGO_DB);
   const co = db.collection(MONGO_CO);
   co.find({}).toArray((err, result) => {
@@ -54,4 +50,31 @@ function listUser() {
   });
 }
 
-connectMongoDb(listUser).catch(closeConnection);
+function updateUser(username, password) {
+  const hash = hash512(password, SALT);
+  connectMongoDb(() => {
+    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
+    admins.find({"user":"yeyu"}).toArray((err, result) => {
+      if (result.length > 0) {
+        admins.update({"user":username}, {"$set":{"password":hash}}, (err, result) => {
+          if (err) console.error("Update operation err:", err);
+          else console.log("Update operation:", result.result);
+          closeConnection();
+        });
+      } else {
+        admins.insertOne({"user":username, "password":hash}, (err, result) => {
+          if (err) console.error("Insert operation err:", err);
+          else console.log("Insert operation:", result.result);
+          closeConnection();
+        });
+      }
+    });
+  }).catch(closeConnection);
+}
+
+function listUser() {
+  connectMongoDb(listUserQuery).catch(closeConnection);
+}
+
+// updateUser("yeyu", "abded");
+listUser();
