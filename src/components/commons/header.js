@@ -1,5 +1,6 @@
 import React from 'react';
 import "./header.css";
+import { Link, Router } from "react-router-dom";
 
 export default class Header extends React.Component {
   render() {
@@ -22,13 +23,17 @@ export default class Header extends React.Component {
 
       <div className="pr-1 mt-1 mr-3 flex-column justify-content-center">
           <div className="d-flex justify-content-center">
-            <a href="#" className="h6 font-weight-bold my-0 py-0">Log In</a>
+            <Link to="/login">
+              <span className="h6 font-weight-bold my-0 py-0">Log In</span>
+            </Link>
           </div>
       </div>
 
       <div className="pr-1 mt-1 mr-3 flex-column justify-content-center">
           <div className="d-flex justify-content-center">
-            <a href="#" className="h6 font-weight-bold my-0 py-0">Register</a>
+            <Link to="/register">
+              <u className="h6 font-weight-bold my-0 py-0">Register</u>
+            </Link>
           </div>
       </div>
     </nav>;
