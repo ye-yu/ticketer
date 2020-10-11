@@ -11,13 +11,11 @@ require("dotenv").config();
 // constants
 const Crypto = require("crypto");
 const { MongoClient } = require("mongodb");
+const MongoUtil = require("./mongo.js");
 const SALT = process.env.SALT;
-const MONGO_USER = process.env.MONGO_USER;
-const MONGO_PWD = process.env.MONGO_PWD;
-const MONGO_DB = "ticketerdb";
-const MONGO_CO = "admins";
-const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PWD}@127.0.0.1:27017/${MONGO_DB}`;
-const MONGO_CLIENT = new MongoClient(MONGO_URI, {"useUnifiedTopology": true});
+const MONGO_CO = "users";
+const MONGO_DB = MongoUtil.database;
+const MONGO_CLIENT = MongoUtil.createClient()
 
 async function connectMongoDb(andThen) {
   await MONGO_CLIENT.connect();
@@ -135,4 +133,10 @@ function query(params, tree = QUERY_TREE) {
   else return query(args, r);
 }
 
-query(process.argv.slice(2));
+if (!module.parent){
+  query(process.argv.slice(2));
+} else {
+  module.exports = {
+    MONGO_CLIENT: MONGO_CLIENT
+  };
+}
