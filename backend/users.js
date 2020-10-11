@@ -165,13 +165,13 @@ const QUERY_TREE = {
     "update": updateUserCLI,
     "remove": removeUserCLI,
     "format": formatUsersCLI
+    "authenticate": authenticateUserCLI
   },
   "tag": {
     "put": putTagUserCLI,
     "take": takeTagUserCLI,
     "get": getTagUserCLI
   },
-  "authenticate": authenticateUserCLI
 }
 
 function query(params, tree = QUERY_TREE) {
