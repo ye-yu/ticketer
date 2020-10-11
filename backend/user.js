@@ -42,7 +42,7 @@ function updateUser(username, password) {
   const hash = hash512(password, SALT);
   connectMongoDb(() => {
     const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.find({"user":"yeyu"}).toArray((err, result) => {
+    admins.find({"user":username}).toArray((err, result) => {
       if (result.length > 0) {
         admins.update({"user":username}, {"$set":{"password":hash}}, (err, result) => {
           if (err) console.error("Update operation err:", err);
