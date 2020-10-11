@@ -38,18 +38,6 @@ function hash512(password, salt){
   return hash.digest('hex');
 };
 
-function listUserQuery() {
-  const db = MONGO_CLIENT.db(MONGO_DB);
-  const co = db.collection(MONGO_CO);
-  co.find({}).toArray((err, result) => {
-    if (err) closeConnection(err);
-    else {
-      console.log(result);
-      closeConnection();
-    }
-  });
-}
-
 function updateUser(username, password) {
   const hash = hash512(password, SALT);
   connectMongoDb(() => {
@@ -73,8 +61,36 @@ function updateUser(username, password) {
 }
 
 function listUser() {
-  connectMongoDb(listUserQuery).catch(closeConnection);
+  connectMongoDb(() => {
+    const db = MONGO_CLIENT.db(MONGO_DB);
+    const co = db.collection(MONGO_CO);
+    co.find({}).toArray((err, result) => {
+      if (err) closeConnection(err);
+      else {
+        console.log(result);
+        closeConnection();
+      }
+    });
+  }).catch(closeConnection);
 }
 
-// updateUser("yeyu", "abded");
-listUser();
+const QUERY_TREE = {
+  "manager": {
+    "update": updateUser,
+    "list": listUser
+  }
+}
+
+function query(params, tree = QUERY_TREE) {
+  if (params.length == 0) {
+    console.error("Unknown query");
+    return;
+  }
+  let r = tree[params[0]]
+  let args = params.slice(1);
+
+  if (typeof r === "function") return r(...args);
+  else return query(args, r);
+}
+
+query(process.argv.slice(2));
