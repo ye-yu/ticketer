@@ -3,7 +3,7 @@
 /*
 Obtains variables of:
 SALT=the salt for password hashing
-MONGO_USER=the username for the mongodb
+MONGO_USER=the user for the mongodb
 MONGO_PWD=the password for the mongodb
 */
 require("dotenv").config();
@@ -36,89 +36,91 @@ function hash512(password, salt){
   return hash.digest('hex');
 };
 
-function updateUser(username, password) {
+function updateUser(collection, user, password, andThen) {
   const hash = hash512(password, SALT);
-  connectMongoDb(() => {
-    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.find({"user":username}).toArray((err, result) => {
-      if (result.length > 0) {
-        admins.updateOne({"user":username}, {"$set":{"password":hash}}, (err, result) => {
-          if (err) console.error("Update operation err:", err);
-          else console.log("Update operation:", result.result);
-          closeConnection();
-        });
-      } else {
-        admins.insertOne({"user":username, "password":hash}, (err, result) => {
-          if (err) console.error("Insert operation err:", err);
-          else console.log("Insert operation:", result.result);
-          closeConnection();
-        });
-      }
-    });
-  }).catch(closeConnection);
+  collection.find({"user":user}).toArray((err, result) => {
+    if (result.length > 0) {
+      collection.updateOne({"user":user}, {"$set":{"password":hash}}, (err, result) => {
+        if (err) console.error("Update operation err:", err);
+        else console.log("Update operation:", result.result);
+        andThen();
+      });
+    } else {
+      collection.insertOne({"user":user, "password":hash}, (err, result) => {
+        if (err) console.error("Insert operation err:", err);
+        else console.log("Insert operation:", result.result);
+        andThen();
+      });
+    }
+  });
 }
 
-function listUser() {
-  connectMongoDb(() => {
-    const db = MONGO_CLIENT.db(MONGO_DB);
-    const co = db.collection(MONGO_CO);
-    co.find({}).toArray((err, result) => {
-      if (err) closeConnection(err);
-      else {
-        console.log(result);
-        closeConnection();
-      }
-    });
-  }).catch(closeConnection);
-}
-
-function removeUser(username) {
-  connectMongoDb(() => {
-    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.removeOne({"user":username}, (err, result) => {
-      if (err) console.error("Remove operation err:", err);
-      else console.log("Remove operation:", result.result);
+function listUser(collection, attribute) {
+  collection.find(attribute).toArray((err, result) => {
+    if (err) closeConnection(err);
+    else {
+      console.log(result);
       closeConnection();
-    });
-  }).catch(closeConnection);
+    }
+  });
 }
 
-function formatUsers() {
-  connectMongoDb(() => {
-    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.remove({}, (err, result) => {
-      if (err) console.error("Remove operation err:", err);
-      else console.log("Remove operation:", result.result);
-      closeConnection();
-    });
-  }).catch(closeConnection);
+function removeUser(collection, user, andThen) {
+  collection.removeOne({"user":user}, (err, result) => {
+    if (err) console.error("Remove operation err:", err);
+    else console.log("Remove operation:", result.result);
+    andThen();
+  });
 }
 
-function authenticateUser(username, password) {
+function formatUsers(collection, andThen) {
+  collection.remove({}, (err, result) => {
+    if (err) console.error("Remove operation err:", err);
+    else console.log("Remove operation:", result.result);
+    andThen();
+  });
+}
+
+function authenticateUser(collection, user, password, whenAuthenticationValid, whenAuthenticationInvalid) {
   const hash = hash512(password, SALT);
-  connectMongoDb(() => {
-    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.findOne({"user":username}).toArray((err, result) => {
-      if (result.length > 0) {
-        if (result[0].password === hash) console.log("Authentication successful");
-        else console.error("Authentication failed");
-        closeConnection();
-      } else {
-        console.error(`Cannot authenticate ${user}`);
-        closeConnection();
-      }
-    });
-  }).catch(closeConnection);
+  collection.findOne({"user":user}, (err, result) => {
+    if (err ) whenAuthenticationInvalid(err);
+    else if (result == null) whenAuthenticationInvalid(`Cannot authenticate ${user}`);
+    else {
+      if (result.password === hash) whenAuthenticationValid("Authentication successful");
+      else whenAuthenticationInvalid("Authentication failed");
+    }
+  });
+}
+
+function updateUserCLI(user, password) {
+  connectMongoDb(() => updateUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, password, closeConnection)).catch(closeConnection);
+}
+
+function listUserCLI() {
+  connectMongoDb(() => listUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), {})).catch(closeConnection);
+}
+
+function removeUserCLI(user) {
+  connectMongoDb(() => removeUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, closeConnection)).catch(closeConnection);
+}
+
+function formatUsersCLI() {
+  connectMongoDb(() => formatUsers(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), closeConnection)).catch(closeConnection);
+}
+
+function authenticateUserCLI(user, password) {
+  connectMongoDb(() => authenticateUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), user, password, closeConnection, closeConnection)).catch(closeConnection);
 }
 
 const QUERY_TREE = {
   "manager": {
-    "update": updateUser,
-    "list": listUser,
-    "remove": removeUser,
-    "format": formatUsers
+    "update": updateUserCLI,
+    "list": listUserCLI,
+    "remove": removeUserCLI,
+    "format": formatUsersCLI
   },
-  "authenticate": authenticateUser
+  "authenticate": authenticateUserCLI
 }
 
 function query(params, tree = QUERY_TREE) {
@@ -137,6 +139,7 @@ if (!module.parent){
   query(process.argv.slice(2));
 } else {
   module.exports = {
-    MONGO_CLIENT: MONGO_CLIENT
+    updateUser: updateUser,
+    authenticateUser: authenticateUser
   };
 }
