@@ -4,4 +4,28 @@ $font-family-sans-serif:      Roboto, sans-serif;
 $font-family-base:            $font-family-sans-serif;
 $headings-font-family:        "Fira Sans", Roboto, sans-serif;
 
+$primary:       #004643;
+$secondary:     #779FA1;
+$success:       #C2E812;
+$info:          #BFD7EA;
+$warning:       #D1AC00;
+$danger:        #DD6031;
+$light:         #FAF4D3;
+$dark:          #0C1618;
+
+$theme-colors: () !default;
+$theme-colors: map-merge(
+  (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark
+  ),
+  $theme-colors
+);
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
