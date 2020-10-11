@@ -74,11 +74,53 @@ function listUser() {
   }).catch(closeConnection);
 }
 
+function removeUser(username) {
+  connectMongoDb(() => {
+    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
+    admins.remove({"user":username}, (err, result) => {
+      if (err) console.error("Remove operation err:", err);
+      else console.log("Remove operation:", result.result);
+      closeConnection();
+    });
+  }).catch(closeConnection);
+}
+
+function formatUsers() {
+  connectMongoDb(() => {
+    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
+    admins.remove({}, (err, result) => {
+      if (err) console.error("Remove operation err:", err);
+      else console.log("Remove operation:", result.result);
+      closeConnection();
+    });
+  }).catch(closeConnection);
+}
+
+function authenticateUser(username, password) {
+  const hash = hash512(password, SALT);
+  connectMongoDb(() => {
+    const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
+    admins.find({"user":username}).toArray((err, result) => {
+      if (result.length > 0) {
+        if (result[0].password === hash) console.log("Authentication successful");
+        else console.error("Authentication failed");
+        closeConnection();
+      } else {
+        console.error(`Cannot authenticate ${user}`);
+        closeConnection();
+      }
+    });
+  }).catch(closeConnection);
+}
+
 const QUERY_TREE = {
   "manager": {
     "update": updateUser,
-    "list": listUser
-  }
+    "list": listUser,
+    "remove": removeUser,
+    "format": formatUsers
+  },
+  "authenticate": authenticateUser
 }
 
 function query(params, tree = QUERY_TREE) {
