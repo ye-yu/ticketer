@@ -15,21 +15,21 @@ const SALT = process.env.SALT;
 const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PWD = process.env.MONGO_PWD;
 const MONGO_DB = "ticketerdb";
+const MONGO_CO = "admins";
 const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PWD}@127.0.0.1:27017/${MONGO_DB}`;
-const MONGO_CLIENT = new MongoClient(MONGO_URI);
+const MONGO_CLIENT = new MongoClient(MONGO_URI, {"useUnifiedTopology": true});
 
-async function connectMongoDb() {
-  try {
-    // Connect the MONGO_CLIENT to the server
-    await MONGO_CLIENT.connect();
+async function connectMongoDb(andThen) {
+  await MONGO_CLIENT.connect();
+  await MONGO_CLIENT.db(MONGO_DB).command({ ping: 1 });
+  console.log("Connected successfully to the server");
+  andThen();
+}
 
-    // Establish and verify connection
-    await MONGO_CLIENT.db(MONGO_DB).command({ ping: 1 });
-    console.log("Connected successfully to server");
-  } finally {
-    // Ensures that the MONGO_CLIENT will close when you finish/error
-    await MONGO_CLIENT.close();
-  }
+function closeConnection(err) {
+  if (err) console.error(err);
+  MONGO_CLIENT.close();
+  console.log("Disconnected from the server");
 }
 
 function addUser(username, password) {
@@ -42,5 +42,16 @@ function hash512(password, salt){
   return hash.digest('hex');
 };
 
-console.log("trying to connect to", MONGO_URI);
-connectMongoDb().catch(console.log);
+function listUser() {
+  const db = MONGO_CLIENT.db(MONGO_DB);
+  const co = db.collection(MONGO_CO);
+  co.find({}).toArray((err, result) => {
+    if (err) closeConnection(err);
+    else {
+      console.log(result);
+      closeConnection();
+    }
+  });
+}
+
+connectMongoDb(listUser).catch(closeConnection);
