@@ -5,9 +5,13 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Header from "./commons/header";
 
 export default class Home extends React.Component {
   render() {
-    return <h1>Home</h1>;
+    return <div>
+    <Header />
+    <h1>Home</h1>
+    </div>;
   }
 }
