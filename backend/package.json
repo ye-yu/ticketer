@@ -1,0 +1,19 @@
+{
+  "name": "ticketers-backend",
+  "version": "0.0.1",
+  "description": "backend for ticketer app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "ticketer",
+    "javascript"
+  ],
+  "author": "Ye Yu",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2"
+  }
+}
