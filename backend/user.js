@@ -44,7 +44,7 @@ function updateUser(username, password) {
     const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
     admins.find({"user":username}).toArray((err, result) => {
       if (result.length > 0) {
-        admins.update({"user":username}, {"$set":{"password":hash}}, (err, result) => {
+        admins.updateOne({"user":username}, {"$set":{"password":hash}}, (err, result) => {
           if (err) console.error("Update operation err:", err);
           else console.log("Update operation:", result.result);
           closeConnection();
@@ -77,7 +77,7 @@ function listUser() {
 function removeUser(username) {
   connectMongoDb(() => {
     const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.remove({"user":username}, (err, result) => {
+    admins.removeOne({"user":username}, (err, result) => {
       if (err) console.error("Remove operation err:", err);
       else console.log("Remove operation:", result.result);
       closeConnection();
@@ -100,7 +100,7 @@ function authenticateUser(username, password) {
   const hash = hash512(password, SALT);
   connectMongoDb(() => {
     const admins = MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO)
-    admins.find({"user":username}).toArray((err, result) => {
+    admins.findOne({"user":username}).toArray((err, result) => {
       if (result.length > 0) {
         if (result[0].password === hash) console.log("Authentication successful");
         else console.error("Authentication failed");
