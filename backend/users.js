@@ -31,9 +31,9 @@ function closeConnection(err) {
 }
 
 function hash512(password, salt){
-  let hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+  let hash = Crypto.createHmac("sha512", salt); /** Hashing algorithm sha512 */
   hash.update(password);
-  return hash.digest('hex');
+  return hash.digest("hex");
 };
 
 function updateUser(collection, user, password, andThen) {
