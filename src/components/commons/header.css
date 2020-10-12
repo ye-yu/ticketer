@@ -5,5 +5,5 @@
 
 .border-header {
   border-width: 2px !important;
-  border-color: var(--secondary) !important;
+  border-color: var(--primary) !important;
 }

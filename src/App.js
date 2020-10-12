@@ -10,6 +10,7 @@ import About from "./components/about";
 import Users from "./components/users";
 import Login from "./components/logins/login"
 import Register from "./components/logins/register"
+import NotFound from "./components/notfound"
 
 export default function App() {
   return (
@@ -28,9 +29,10 @@ export default function App() {
           <Route path="/register">
             <Register />
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <Home />
           </Route>
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>
