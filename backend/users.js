@@ -16,6 +16,13 @@ const SALT = process.env.SALT;
 const MONGO_CO = "users";
 const MONGO_DB = MongoUtil.database;
 const MONGO_CLIENT = MongoUtil.createClient()
+const schema = {
+  email: "email",
+  password: "password",
+  displayName: "displayName",
+  role: "role",
+  banned: "banned"
+}
 
 async function connectMongoDb(andThen) {
   await MONGO_CLIENT.connect();
@@ -38,15 +45,15 @@ function hash512(password, salt){
 
 function updateUser(collection, user, password, andThen) {
   const hash = hash512(password, SALT);
-  collection.find({"user":user}).toArray((err, result) => {
+  collection.find({[schema.email]:user}).toArray((err, result) => {
     if (result.length > 0) {
-      collection.updateOne({"user":user}, {"$set":{"password":hash}}, (err, result) => {
+      collection.updateOne({[schema.email]:user}, {"$set":{[schema.password]:hash}}, (err, result) => {
         if (err) console.error("Update operation err:", err);
         else console.log("Update operation:", result.result);
         andThen();
       });
     } else {
-      collection.insertOne({"user":user, "password":hash}, (err, result) => {
+      collection.insertOne({[schema.email]:user, [schema.password]:hash}, (err, result) => {
         if (err) console.error("Insert operation err:", err);
         else console.log("Insert operation:", result.result);
         andThen();
@@ -55,18 +62,33 @@ function updateUser(collection, user, password, andThen) {
   });
 }
 
-function listUser(collection, attribute) {
+function registerNewUser(collection, email, password, attributes, onSuccessful, onError) {
+  let insert = {email: email, password: hash512(password, SALT), ...attributes};
+  collection.insertOne(insert, (err, result) => {
+    if (err) onError(err);
+    else onSuccessful(result);
+  });
+}
+
+function listUser(collection, attribute, andThen) {
   collection.find(attribute).toArray((err, result) => {
-    if (err) closeConnection(err);
+    if (err) console.err(err);
     else {
       console.log(result);
-      closeConnection();
+      andThen();
     }
   });
 }
 
+function listOneUser(collection, attribute, onSuccessful, onError) {
+  collection.findOne(attribute, (err, result) => {
+    if (err) onError(err);
+    else onSuccessful(result);
+  });
+}
+
 function removeUser(collection, user, andThen) {
-  collection.removeOne({"user":user}, (err, result) => {
+  collection.removeOne({[schema.email]:user}, (err, result) => {
     if (err) console.error("Remove operation err:", err);
     else console.log("Remove operation:", result.result);
     andThen();
@@ -83,18 +105,18 @@ function formatUsers(collection, andThen) {
 
 function authenticateUser(collection, user, password, whenAuthenticationValid, whenAuthenticationInvalid) {
   const hash = hash512(password, SALT);
-  collection.findOne({"user":user}, (err, result) => {
+  collection.findOne({[schema.email]:user}, (err, result) => {
     if (err ) whenAuthenticationInvalid(err);
     else if (result == null) whenAuthenticationInvalid(`Cannot authenticate ${user}`);
     else {
-      if (result.password === hash) whenAuthenticationValid("Authentication successful");
+      if (result.password === hash) whenAuthenticationValid(result);
       else whenAuthenticationInvalid("Authentication failed");
     }
   });
 }
 
 function putTag(collection, user, tag, andThen) {
-  collection.findOneAndUpdate({"user":user}, {"$set": tag}, {}, (err, result) => {
+  collection.findOneAndUpdate({[schema.email]:user}, {"$set": tag}, {}, (err, result) => {
     if (err) console.error("Put tag operation err:", err);
     else console.log("Put tag operation:", result);
     andThen();
@@ -104,7 +126,7 @@ function putTag(collection, user, tag, andThen) {
 function takeTag(collection, user, tag, andThen) {
   const unset = {};
   unset[tag] = "";
-  collection.findOneAndUpdate({"user":user}, {"$unset": unset}, {}, (err, result) => {
+  collection.findOneAndUpdate({[schema.email]:user}, {"$unset": unset}, {}, (err, result) => {
     if (err) console.error("Take tag operation err:", err);
     else console.log("Take tag operation:", result);
     andThen();
@@ -112,7 +134,7 @@ function takeTag(collection, user, tag, andThen) {
 }
 
 function getTag(collection, user, tag, andThen) {
-  collection.findOne({"user":user}, (err, result) => {
+  collection.findOne({[schema.email]:user}, (err, result) => {
     andThen(result[tag]);
   });
 }
@@ -122,7 +144,19 @@ function updateUserCLI(user, password) {
 }
 
 function listUserCLI() {
-  connectMongoDb(() => listUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), {})).catch(closeConnection);
+  connectMongoDb(() => listUser(MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO), {}, closeConnection)).catch(closeConnection);
+}
+
+function listOneUserCLI(attribute, value) {
+  connectMongoDb(() => listOneUser(
+    MONGO_CLIENT.db(MONGO_DB).collection(MONGO_CO),
+    {[attribute]: value},
+    (successful) => {
+      console.log("Got user", successful);
+      closeConnection();
+    },
+    closeConnection
+  )).catch(closeConnection);
 }
 
 function removeUserCLI(user) {
@@ -162,9 +196,10 @@ function getTagUserCLI(user, tag) {
 const QUERY_TREE = {
   "credential": {
     "list": listUserCLI,
+    "one": listOneUserCLI,
     "update": updateUserCLI,
     "remove": removeUserCLI,
-    "format": formatUsersCLI
+    "format": formatUsersCLI,
     "authenticate": authenticateUserCLI
   },
   "tag": {
@@ -190,10 +225,13 @@ if (!module.parent){
   query(process.argv.slice(2));
 } else {
   module.exports = {
-    updateUser: updateUser,
+    registerNewUser: registerNewUser,
+    listOneUser: listOneUser,
     authenticateUser: authenticateUser,
     putTag: putTag,
     takeTag: takeTag,
-    getTag: getTag
+    getTag: getTag,
+    collection: MONGO_CO,
+    schema: schema
   };
 }
