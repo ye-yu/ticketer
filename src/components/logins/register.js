@@ -9,7 +9,8 @@ export default class Register extends React.Component {
       dn: "",
       em: "",
       pw: "",
-      isWaitingResponse: false
+      isWaitingResponse: false,
+      errorMessage: ""
     };
 
     this.handleInputs = this.handleInputs.bind(this);
@@ -22,7 +23,10 @@ export default class Register extends React.Component {
 
   handleButton(button) {
     this.setState({isWaitingResponse: true});
-    setTimeout(() => this.setState({isWaitingResponse: false}), 2000);
+    setTimeout(() => this.setState({
+      isWaitingResponse: false,
+      errorMessage: "Server is not responding"
+    }), 2000);
   }
 
   disableButton() {
@@ -39,6 +43,12 @@ export default class Register extends React.Component {
   }
 
   render() {
+    let error = this.state.errorMessage ? <div class="small alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Error in sending request:</strong> {this.state.errorMessage}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> : "";
     return <div>
       <Header simple={true} section="Register" />
       <div className="container">
@@ -59,6 +69,7 @@ export default class Register extends React.Component {
                 <input type="password" className="form-control form-control-sm" name="pw" id="registerPassword" placeholder="Password" minlength="10" onChange={this.handleInputs} />
               </div>
               <small id="notice" className="form-text text-muted text-center py-3">By registering, you agree to the Terms & Conditions and Privacy Policy.</small>
+              {error}
               <button type="submit" className="btn btn-primary btn-sm btn-block py-2" disabled={this.disableButton()} onClick={this.handleButton}>Submit</button>
             </div>
           </div>
