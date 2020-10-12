@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Header from "../commons/header.js";
+import Requests from "../../requests.js";
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class Register extends React.Component {
       em: "",
       pw: "",
       isWaitingResponse: false,
-      errorMessage: ""
+      errorMessage: undefined,
+      redirect: undefined
     };
 
     this.handleInputs = this.handleInputs.bind(this);
@@ -22,11 +24,35 @@ export default class Register extends React.Component {
   }
 
   handleButton(button) {
-    this.setState({isWaitingResponse: true});
-    setTimeout(() => this.setState({
-      isWaitingResponse: false,
-      errorMessage: "Server is not responding"
-    }), 2000);
+    this.setState({
+      isWaitingResponse: true,
+      errorMessage: undefined
+    });
+    Requests.Server.sendPostRequest(Requests.register, {...this.state},
+      (successful) => {
+        this.setState({
+          isWaitingResponse: false,
+          errorMessage: undefined,
+          redirect: "/"
+        });
+      },
+      (err) => {
+        let reason = err.response ? JSON.parse(err.response).reason : "Cannot extract the reason.";
+        this.setState({
+          isWaitingResponse: false,
+          errorMessage: `[${err.status}] ${reason}`
+        });
+      }
+    );
+
+    setTimeout(() => {
+      if (this.state.isWaitingResponse) {
+        this.setState({
+          isWaitingResponse: false,
+          errorMessage: "Server is not responding"
+        });
+      }
+    }, 36000);
   }
 
   disableButton() {
@@ -43,9 +69,10 @@ export default class Register extends React.Component {
   }
 
   render() {
-    let error = this.state.errorMessage ? <div class="small alert alert-warning alert-dismissible fade show" role="alert">
+    if (this.state.redirect) return <Redirect to={this.state.redirect} />
+    let error = this.state.errorMessage ? <div className="small alert alert-warning alert-dismissible fade show" role="alert">
       <strong>Error in sending request:</strong> {this.state.errorMessage}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div> : "";
@@ -56,17 +83,17 @@ export default class Register extends React.Component {
           <div className="col shadow rounded bg-light">
             <div className="py-4">
               <div className="form-group">
-                <label for="registerName"><b>Display Name</b></label>
+                <label htmlFor="registerName"><b>Display Name</b></label>
                 <input type="text" className="form-control form-control-sm" name="dn" id="registerName" placeholder="Enter name" onChange={this.handleInputs} />
               </div>
               <div className="form-group">
-                <label for="registerEmail"><b>Email address</b></label>
+                <label htmlFor="registerEmail"><b>Email address</b></label>
                 <input type="email" className="form-control form-control-sm" name="em" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleInputs} />
                 <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
               </div>
               <div className="form-group">
-                <label for="registerPassword"><b>Password</b></label>
-                <input type="password" className="form-control form-control-sm" name="pw" id="registerPassword" placeholder="Password" minlength="10" onChange={this.handleInputs} />
+                <label htmlFor="registerPassword"><b>Password</b></label>
+                <input type="password" className="form-control form-control-sm" name="pw" id="registerPassword" placeholder="Password" minLength="10" onChange={this.handleInputs} />
               </div>
               <small id="notice" className="form-text text-muted text-center py-3">By registering, you agree to the Terms & Conditions and Privacy Policy.</small>
               {error}

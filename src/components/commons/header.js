@@ -56,7 +56,7 @@ export default class Header extends React.Component {
 
     let searchField = <form className="mr-4 mt-1 py-2 flex-grow-0 flex-md-grow-1 flex-column justify-content-center">
       <div>
-        <input class="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />
+        <input className="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />
       </div>
     </form>;
 
