@@ -1,0 +1,9 @@
+.logo {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.border-header {
+  border-width: 2px !important;
+  border-color: var(--primary) !important;
+}
