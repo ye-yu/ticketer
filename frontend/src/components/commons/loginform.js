@@ -41,8 +41,8 @@ export default class LoginForm extends React.Component {
     </form>;
 
     return <div>
-      <div className="d-none d-md-block container-fluid">
-        <div className="row">
+      <div className="d-none d-md-block position-relative container-fluid">
+        <div className="row position-absolute" style={{right: "1rem"}}>
           <div className="col-9"></div>
           <div className="col px-3 py-4 shadow">
             {loginForm}
