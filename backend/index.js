@@ -73,6 +73,10 @@ function endWithReason(res, code, reason) {
   }));
 }
 
+function end(res, obj, code=200) {
+  res.status(code).end(JSON.stringify(obj));
+}
+
 function getUserCollection() {
   return MONGO_CLIENT.db(MongoUtil.database).collection(Users.collection);
 }
@@ -81,20 +85,18 @@ app.get("/", function(req, res, next) {
   let message = req.session.views ? "Welcome back! Check your views" : "Welcome! You visit this site for the first time.";
   req.session.views = req.session.views ? req.session.views + 1 : 1;
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({
+  end(res, {
     views: req.session.views,
     message: message,
     queries: {...req.query}
-  }));
+  });
 });
 
 app.get("/revoke", function(req, res, next) {
   req.session.destroy(err => {
     if (err) next(err);
     res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({
-      ok: 1
-    }));
+    end(res, {ok:1});
   });
 });
 
@@ -131,6 +133,30 @@ app.post("/register", function(req, res, next) {
       );
     }
   }
+});
+
+app.get("/session", function(req, res, next) {
+  if(!req.session.ticketerSession) {
+    end(res, {session: false});
+  } else {
+    end(res, {
+      session: true,
+      name: req.session.dn,
+      avatarSmall: req.session.avatarSmall
+    });
+  }
+});
+
+app.post("/login", function(req, res, next) {
+  Users.authenticateUser(getUserCollection(), req.body.em, req.body.pw,
+    (success) => end(res, {"ok": 1}),
+    (err) => endWithReason(res, 400, err)
+  );
+})
+
+app.post("*", function(req, res, next) {
+  endWithReason(res, 404, `Could not resolve ${req.url}.`);
+  console.error("Client requested inexistent path", req.url);
 });
 
 function connect() {

@@ -106,7 +106,7 @@ function formatUsers(collection, andThen) {
 function authenticateUser(collection, user, password, whenAuthenticationValid, whenAuthenticationInvalid) {
   const hash = hash512(password, SALT);
   collection.findOne({[schema.email]:user}, (err, result) => {
-    if (err ) whenAuthenticationInvalid(err);
+    if (err) whenAuthenticationInvalid(err);
     else if (result == null) whenAuthenticationInvalid(`Cannot authenticate ${user}`);
     else {
       if (result.password === hash) whenAuthenticationValid(result);

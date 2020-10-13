@@ -62,5 +62,7 @@ function constructUri(host, path) {
 
 module.exports = {
   Server: new ServerJsonRequest(SERVER_URI),
-  register: "register"
+  register: "register",
+  login: "login",
+  session: "session"
 };

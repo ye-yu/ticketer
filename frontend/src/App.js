@@ -8,7 +8,6 @@ import {
 import Home from "./components/home";
 import About from "./components/about";
 import Users from "./components/users";
-import Login from "./components/logins/login"
 import Register from "./components/logins/register"
 import NotFound from "./components/notfound"
 
@@ -22,9 +21,6 @@ export default function App() {
           </Route>
           <Route path="/users">
             <Users />
-          </Route>
-          <Route path="/login">
-            <Login />
           </Route>
           <Route path="/register">
             <Register />

@@ -1,4 +1,8 @@
-import React from 'react';
+import React from "react";
+import Alert from "react-bootstrap/Alert";
+import Requests from "../../requests.js";
+import { Redirect } from "react-router-dom";
+
 const validate = require("email-validator").validate;
 
 export default class LoginForm extends React.Component {
@@ -7,7 +11,8 @@ export default class LoginForm extends React.Component {
     this.state = {
       em: "",
       pw: "",
-      isWaitingResponse: false
+      isWaitingResponse: false,
+      errorMessage:""
     };
 
     this.handleInputs = this.handleInputs.bind(this);
@@ -19,7 +24,23 @@ export default class LoginForm extends React.Component {
   }
 
   handleButton(event, keepSession) {
-    console.log("Sent event:", event, "=> keepSession:", keepSession);
+    let loginInfo = {
+      em: this.state.em,
+      pw: this.state.pw,
+      ks: keepSession
+    }
+    Requests.Server.sendPostRequest(Requests.login, loginInfo,
+      (successful) => {
+        window.location.reload(false);
+      },
+      (err) => {
+        let reason = err.response ? JSON.parse(err.response).reason : "Cannot extract the reason.";
+        this.setState({
+          isWaitingResponse: false,
+          errorMessage: `[${err.status}] ${reason}`
+        });
+      }
+    );
   }
 
   disableButton() {
@@ -27,6 +48,7 @@ export default class LoginForm extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
     let loginForm = <form>
       <div className="form-group">
         <input type="email" className="form-control form-control-sm rounded-0" id="emailLogin" name="em" placeholder="Enter email" onChange={this.handleInputs} />
@@ -37,6 +59,21 @@ export default class LoginForm extends React.Component {
       <div className="d-flex">
         <button type="button" className="btn btn-primary btn-sm py-1 small ml-auto mr-2" disabled={this.disableButton()} onClick={(e) => this.handleButton(e, true)}>Login and Keep Session</button>
         <button type="button" className="btn btn-primary btn-sm py-1 small" disabled={this.disableButton()} onClick={(e) => this.handleButton(e, false)}>Login</button>
+      </div>
+
+      <div className="mt-3">
+        <Alert show={this.state.errorMessage} variant="danger">
+          <div className="d-flex">
+            <div className="flex-fill">
+              <small>{this.state.errorMessage}</small>
+            </div>
+            <div>
+              <a href="#" className="text-danger" onClick={() => this.setState({errorMessage:""})}>
+              &times;
+              </a>
+            </div>
+          </div>
+        </Alert>
       </div>
     </form>;
 

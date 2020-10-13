@@ -53,6 +53,7 @@ export default class Header extends React.Component {
   }
 
   renderMore() {
+    console.log(this.state);
     let brand = <div className="mx-0 my-0 px-4 px-lg-5 h-100 d-flex flex-column justify-content-center h-100 border-right">
         <div className="d-flex justify-content-center">
           <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" />
