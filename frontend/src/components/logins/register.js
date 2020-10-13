@@ -80,7 +80,7 @@ export default class Register extends React.Component {
       <Header simple={true} section="Register" />
       <div className="container">
         <div className="row mt-5 px-5 py-3">
-          <div className="col shadow rounded bg-light">
+          <div className="col-lg-4 col shadow rounded bg-light">
             <div className="py-4">
               <div className="form-group">
                 <label htmlFor="registerName"><b>Display Name</b></label>
@@ -101,7 +101,7 @@ export default class Register extends React.Component {
             </div>
           </div>
 
-          <div className="col d-none d-lg-block">
+          <div className="col-lg-8 d-none d-lg-block">
           </div>
 
         </div>
