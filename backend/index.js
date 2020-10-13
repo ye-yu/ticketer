@@ -165,4 +165,6 @@ function prompt() {
     prompt();
   });
 }
+
+connect();
 prompt();
