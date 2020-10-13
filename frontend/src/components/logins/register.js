@@ -80,10 +80,21 @@ export default class Register extends React.Component {
       <Header simple={true} section="Register" />
       <div className="container">
         <div className="row mt-5 px-5 py-3">
+          <div className="col-lg-1 d-none d-lg-block"></div>
           <div className="col-lg-4 col shadow rounded bg-light">
             <div className="py-4">
-              <div className="h5 pt-3 pb-5 text-center d-block d-lg-none">
-                Register now to enable ticket votings, bumps, and discussions.
+              <div className="pt-3 pb-5 text-center d-block d-lg-none">
+                <div className="pl-3">
+                  <span className="h6 text-center font-weight-bold">Register now to unlock ticketer services:</span>
+                  <div className="small pt-3 mx-5">
+                    Build project <br />
+                    Vote and comment tickets <br />
+                    Gain reputations <br />
+                    Use reputation points to bump stale tickets <br />
+                    Recruit contributors for a ticket <br />
+                    Hide votes to prevent voting biases <br />
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="registerName"><b>Display Name</b></label>
@@ -105,14 +116,15 @@ export default class Register extends React.Component {
             </div>
           </div>
 
-          <div className="col-lg d-none d-lg-block pt-5 px-5">
-            <div className="h5 py-3" style={{lineHeight: "2rem"}}>
-              Ticketer makes issue tickets more visible and personalised to the target audience.
+          <div className="col-lg-7 d-none d-lg-block pt-5 px-5">
+            <div className="h5 pl-3 py-3" style={{lineHeight: "2rem"}}>
+              Ticketer makes feature request tickets and issue tickets more visible and personalised to the target audience.
             </div>
 
-            <div className="pt-3 pb-5" style={{lineHeight: "2rem"}}>
+            <div className="pl-3 pt-3 pb-5" style={{lineHeight: "1.5rem"}}>
               <span className="font-weight-bold">Register now to unlock ticketer services:</span>
               <ul>
+                <li>Build project</li>
                 <li>Vote and comment tickets</li>
                 <li>Gain reputations</li>
                 <li>Use reputation points to bump stale tickets</li>
