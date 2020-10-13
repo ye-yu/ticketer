@@ -82,6 +82,9 @@ export default class Register extends React.Component {
         <div className="row mt-5 px-5 py-3">
           <div className="col-lg-4 col shadow rounded bg-light">
             <div className="py-4">
+              <div className="h5 pt-3 pb-5 text-center d-block d-lg-none">
+                Register now to enable ticket votings, bumps, and discussions.
+              </div>
               <div className="form-group">
                 <label htmlFor="registerName"><b>Display Name</b></label>
                 <input type="text" className="form-control form-control-sm" name="dn" id="registerName" placeholder="Enter name" onChange={this.handleInputs} />
@@ -97,11 +100,26 @@ export default class Register extends React.Component {
               </div>
               <small id="notice" className="form-text text-muted text-center py-3">By registering, you agree to the Terms & Conditions and Privacy Policy.</small>
               {error}
-              <button type="submit" className="btn btn-primary btn-sm btn-block py-2" disabled={this.disableButton()} onClick={this.handleButton}>Submit</button>
+              <button type="button" className="btn btn-primary btn-sm btn-block py-2" disabled={this.disableButton()} onClick={this.handleButton}>Submit</button>
+              <button type="button" className="btn btn-outline-primary btn-sm btn-block py-2">Cancel</button>
             </div>
           </div>
 
-          <div className="col-lg-8 d-none d-lg-block">
+          <div className="col-lg d-none d-lg-block pt-5 px-5">
+            <div className="h5 py-3" style={{lineHeight: "2rem"}}>
+              Ticketer makes issue tickets more visible and personalised to the target audience.
+            </div>
+
+            <div className="pt-3 pb-5" style={{lineHeight: "2rem"}}>
+              <span className="font-weight-bold">Register now to unlock ticketer services:</span>
+              <ul>
+                <li>Vote and comment tickets</li>
+                <li>Gain reputations</li>
+                <li>Use reputation points to bump stale tickets</li>
+                <li>Recruit contributors for a ticket</li>
+                <li>Hide votes to prevent voting biases</li>
+              </ul>
+            </div>
           </div>
 
         </div>
