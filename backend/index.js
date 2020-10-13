@@ -20,9 +20,14 @@ const Users = require("./users.js");
 const MongoUtil = require("./mongo.js");
 const jsonParser = require("body-parser").json;
 const validateEmail = require("email-validator").validate;
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 const app = new Express();
-const MONGO_CLIENT = MongoUtil.createClient()
+const MONGO_CLIENT = MongoUtil.createClient();
 let mongoClientReady = false;
+let server = {close: () => console.error("Server has not started.")};
 
 class HttpException {
   constructor(code, message) {
@@ -72,7 +77,6 @@ function getUserCollection() {
   return MONGO_CLIENT.db(MongoUtil.database).collection(Users.collection);
 }
 
-
 app.get("/", function(req, res, next) {
   let message = req.session.views ? "Welcome back! Check your views" : "Welcome! You visit this site for the first time.";
   req.session.views = req.session.views ? req.session.views + 1 : 1;
@@ -109,31 +113,56 @@ app.post("/register", function(req, res, next) {
       endWithReason(res, 400, "Password is too short.");
     } else {
       Users.listOneUser(getUserCollection(), {[Users.schema.email]: email},
-      (result) => {
-        if (result == null) {
-          Users.registerNewUser(getUserCollection(), email, password, {[Users.schema.displayName]: displayName},
-          (success) => {
-            endWithReason(res, 201, "An account is created.");
-          },
-          (err) => {
-            console.error("Cannot register user:", err);
-            endWithReason(res, 500, "Cannot register an account.");
+        (result) => {
+          if (result == null) {
+            Users.registerNewUser(getUserCollection(), email, password, {[Users.schema.displayName]: displayName},
+            (success) => {
+              endWithReason(res, 201, "An account is created.");
+            },
+            (err) => {
+              console.error("Cannot register user:", err);
+              endWithReason(res, 500, "Cannot register an account.");
+            }
+          );
+          } else {
+            endWithReason(res, 400, "Email already exists.")
           }
-        );
-        } else {
-          endWithReason(res, 400, "Email already exists.")
         }
-      }
-    )
+      );
     }
   }
 });
 
-console.log("Connecting to mongodb");
-MONGO_CLIENT.connect().then(() => {
-  mongoClientReady = true;
-  console.log("Connected to mongodb");
-})
+function connect() {
+  console.log("Connecting to mongodb...");
+  MONGO_CLIENT.connect().then(() => {
+    mongoClientReady = true;
+    console.log("Connected to mongodb.");
+  }).catch(console.error);
 
-console.log("Listening to", PORT);
-app.listen(PORT);
+  console.log(`Listening to ${PORT}...`);
+  server = app.listen(PORT);
+}
+function prompt() {
+  console.log("'d' to disconnect.");
+  console.log("'q' to quit.");
+  console.log("'c' to reconnect.");
+  console.log("'i' to check MongoDB connection.")
+  readline.question("", (command) => {
+    if (command === 'q') process.exit(0);
+    else if (command === 'c') connect();
+    else if (command === 'i') console.log(mongoClientReady ? "MongeDB client is still connected." : "MongoDB is not connected.");
+    else if (command === 'd') {
+      console.log("Wait for the driver to disconnect.");
+      server.close(() => console.log("Server has been terminated."));
+      MONGO_CLIENT.close().then(() => {
+        mongoClientReady = false;
+        console.log("Disconnected from MongoDB.")
+      });
+    } else {
+      console.log("Unknown command:", command);
+    }
+    prompt();
+  });
+}
+prompt();
