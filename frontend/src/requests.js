@@ -13,14 +13,14 @@ class ServerJsonRequest {
     let fullUri = constructGetUri(this.uri, paths, params);
     let xhttp = new XMLHttpRequest();
     xhttp.open(GET, fullUri);
+    xhttp.withCredentials = true;
     xhttp.onreadystatechange = function() {
-      if (this.readyState === this.HEADERS_RECEIVED) {
-        if (xhttp.getResponseHeader("Content-Type") !== EXPECTED_TYPE) {
-          onError(this);
-          xhttp.abort();
-        }
-      } else if (this.readyState === 4) {
-        isValidStatusCode(this.status) ? onSuccess(this) : onError(this);
+      if (this.readyState === 4) {
+        let json = {
+          status: xhttp.status,
+          content: toJson(xhttp.response)
+        };
+        isValidStatusCode(this.status) ? onSuccess(json) : onError(json);
       }
     };
     xhttp.send();
@@ -30,14 +30,24 @@ class ServerJsonRequest {
     let fullUri = constructUri(this.uri, paths);
     let xhttp = new XMLHttpRequest();
     xhttp.open(POST, fullUri);
+    xhttp.withCredentials = true;
     xhttp.setRequestHeader("Content-Type", EXPECTED_TYPE);
     xhttp.onreadystatechange = function() {
       if (this.readyState === 4) {
-        isValidStatusCode(this.status) ? onSuccess(xhttp) : onError(xhttp);
+        let json = {
+          status: xhttp.status,
+          content: toJson(xhttp.response)
+        };
+        isValidStatusCode(this.status) ? onSuccess(json) : onError(json);
       }
     };
     xhttp.send(JSON.stringify(params));
   }
+}
+
+function toJson(str) {
+  if (str.length < 2) return {};
+  return JSON.parse(str);
 }
 
 function isValidStatusCode(code) {

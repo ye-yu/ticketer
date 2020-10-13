@@ -18,7 +18,6 @@ const Express = require("express");
 const Session = require("express-session");
 const Users = require("./users.js");
 const MongoUtil = require("./mongo.js");
-const jsonParser = require("body-parser").json;
 const validateEmail = require("email-validator").validate;
 const readline = require('readline').createInterface({
   input: process.stdin,
@@ -36,19 +35,30 @@ class HttpException {
   }
 }
 
-app.use(jsonParser());
+app.use(Express.json());
 app.use(new Session({
   secret: SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
+    secure: false,
     maxAge: COOKIE_MAX_AGE
   }
 }));
+app.set('trust proxy', true);
+
 app.use(function(req, res, next) {
   res.header("Content-Type", "application/json");
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header('Access-control-Allow-Origin', 'http://localhost:3000');
+  res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header('Access-Control-Allow-Credentials', true);
+  if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+      return res.status(200).json({});
+  }
   next();
 });
 app.use(function(req, res, next) {
@@ -136,7 +146,8 @@ app.post("/register", function(req, res, next) {
 });
 
 app.get("/session", function(req, res, next) {
-  if(!req.session.ticketerSession) {
+  console.log("Checking", req.session);
+  if(!req.session.hasLoggedIn) {
     end(res, {session: false});
   } else {
     end(res, {
@@ -148,15 +159,29 @@ app.get("/session", function(req, res, next) {
 });
 
 app.post("/login", function(req, res, next) {
-  Users.authenticateUser(getUserCollection(), req.body.em, req.body.pw,
-    (success) => end(res, {"ok": 1}),
-    (err) => endWithReason(res, 400, err)
-  );
+  console.log("Checking", req.session);
+  if (req.session.hasLoggedIn) {
+    endWithReason(res, 403, "You are still logged in!")
+  } else {
+    Users.authenticateUser(getUserCollection(), req.body.em, req.body.pw,
+      (success) => {
+        req.session.hasLoggedIn = true;
+        req.session.dn = success.displayName;
+        req.session.avatarSmall = success.avatar;
+        // req.session.save(() => {
+        //
+        //   console.log("Session saved", req.session);
+        // });
+        end(res, {"ok": 1});
+      },
+      (err) => endWithReason(res, 400, err)
+    );
+  }
 })
 
 app.post("*", function(req, res, next) {
   endWithReason(res, 404, `Could not resolve ${req.url}.`);
-  console.error("Client requested inexistent path", req.url);
+  console.error("Client requested non-existent path", req.url);
 });
 
 function connect() {

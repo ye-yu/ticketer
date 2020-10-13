@@ -34,7 +34,7 @@ export default class LoginForm extends React.Component {
         window.location.reload(false);
       },
       (err) => {
-        let reason = err.response ? JSON.parse(err.response).reason : "Cannot extract the reason.";
+        let reason = err.content ? err.content.reason : "Cannot extract the reason.";
         this.setState({
           isWaitingResponse: false,
           errorMessage: `[${err.status}] ${reason}`
@@ -68,7 +68,7 @@ export default class LoginForm extends React.Component {
               <small>{this.state.errorMessage}</small>
             </div>
             <div>
-              <a href="#" className="text-danger" onClick={() => this.setState({errorMessage:""})}>
+              <a href="#close" className="text-danger" onClick={() => this.setState({errorMessage:""})}>
               &times;
               </a>
             </div>

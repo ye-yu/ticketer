@@ -38,7 +38,7 @@ export default class Register extends React.Component {
         });
       },
       (err) => {
-        let reason = err.response ? JSON.parse(err.response).reason : "Cannot extract the reason.";
+        let reason = err ? err.content.reason : "Cannot extract the reason.";
         this.setState({
           isWaitingResponse: false,
           errorMessage: `[${err.status}] ${reason}`

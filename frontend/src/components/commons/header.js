@@ -3,6 +3,8 @@ import "./header.css";
 import { Link } from "react-router-dom";
 import Collapse from "react-bootstrap/Collapse";
 import LoginForm from "./loginform";
+import Requests from "../../requests.js";
+
 export default class Header extends React.Component {
 
   constructor(props) {
@@ -14,20 +16,15 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.timerID = setTimeout(
-      () => this.tick(),
-      1000
+    if (this.props.simple) return;
+    Requests.Server.sendGetRequest(Requests.session, {},
+      (success) => success.content.session ? this.setState({profile: success.content}) : false,
+      (err) => console.log("User has no session.", err)
     );
   }
 
   componentWillUnmount() {
     clearTimeout(this.timerID);
-  }
-
-  tick() {
-    this.setState({
-      profile: "profile"
-    });
   }
 
   setShowLoginForm(show) {
@@ -38,7 +35,7 @@ export default class Header extends React.Component {
     let brand = <div className="mt-1 py-2 px-3 navbar-brand flex-column justify-content-center">
       <Link to="/">
         <div className="d-flex justify-content-center">
-          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" />
+          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" alt="logo" />
           <span className="pl-2 pr-1 my-auto h6">
               Ticketer ≫ <b>{this.props.section}</b>
           </span>
@@ -53,10 +50,9 @@ export default class Header extends React.Component {
   }
 
   renderMore() {
-    console.log(this.state);
     let brand = <div className="mx-0 my-0 px-4 px-lg-5 h-100 d-flex flex-column justify-content-center h-100 border-right">
         <div className="d-flex justify-content-center">
-          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" />
+          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" alt="logo"/>
           <span className="pl-2 pr-1 my-auto h6">
               Ticketer ≫ <b>{this.props.section}</b>
           </span>
@@ -94,7 +90,8 @@ export default class Header extends React.Component {
             {searchField}
           </div>
         </div>
-        {loginLink} {registerLink}
+        {this.state.profile ? "profile" : loginLink}
+        {this.state.profile ? "logout" : registerLink}
       </div>
       {loginForm}
       <div className="d-md-none d-block w-100 px-5 pt-3">
