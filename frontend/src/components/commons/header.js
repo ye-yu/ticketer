@@ -45,47 +45,46 @@ export default class Header extends React.Component {
   }
 
   renderMore() {
-    let brand = <div className="ml-4 mt-1 py-2 px-0 px-lg-3 navbar-brand flex-column justify-content-center h-100">
-      <div className="d-flex flex-column justify-content-center h-100">
+    let brand = <div className="mx-0 my-0 px-4 px-lg-5 h-100 d-flex flex-column justify-content-center h-100 border-right">
         <div className="d-flex justify-content-center">
           <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" />
           <span className="pl-2 pr-1 my-auto h6">
               Ticketer ≫ <b>{this.props.section}</b>
           </span>
-        </div>
       </div>
     </div>;
 
-    let searchField = <form className="d-none d-lg-block mr-4 mt-1 py-2 flex-fill flex-column justify-content-center h-100">
-      <div className="d-flex flex-column justify-content-center h-100">
-        <input className="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />
-      </div>
-    </form>;
+    let searchField = <input className="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />;
 
-    let loginLink = <div className="pr-1 mt-1 ml-auto mr-3 flex-column justify-content-center h-100">
-      <div className="d-flex flex-column justify-content-center h-100">
-        <div className="d-flex justify-content-center">
-          <Link to="/login">
-            <span className="h6 font-weight-bold my-0 py-0">Log In</span>
-          </Link>
-        </div>
+    let loginLink = <div className="ml-auto mr-0 my-0 px-2 px-lg-3 h-100 d-flex flex-column justify-content-center h-100">
+      <div className="d-flex justify-content-center">
+        <Link to="/login">
+          <span className="h6 font-weight-bold my-0 py-0">Log In</span>
+        </Link>
       </div>
     </div>;
 
-    let spacer = <div className="h-100 border-left" style={{width: "30px"}}>&nbsp;</div>;
-
-    let registerLink = <div className="pr-1 mt-1 mr-3 flex-column justify-content-center h-100">
-      <div className="d-flex flex-column justify-content-center h-100">
-        <div className="d-flex justify-content-center">
-          <Link to="/register">
-            <u className="h6 font-weight-bold my-0 py-0">Register</u>
-          </Link>
-        </div>
+    let registerLink = <div className="mx-0 my-0 pl-2 pr-3 pl-lg-3 pr-lg-5 h-100 d-flex flex-column justify-content-center h-100">
+      <div className="d-flex justify-content-center">
+        <Link to="/register">
+          <u className="h6 font-weight-bold my-0 py-0">Register</u>
+        </Link>
       </div>
     </div>;
 
-    return <div className="border-bottom border-header shadow-sm d-flex flex-row" style={{height: "70px"}}>
-      {brand} {spacer} {searchField} {loginLink} {registerLink}
+    return <div>
+      <div className="border-bottom border-header shadow-sm d-flex flex-row" style={{height: "70px"}}>
+        {brand}
+        <div className="d-none d-md-flex mx-0 my-0 px-5 flex-fill flex-column justify-content-center h-100">
+          <div className="d-flex justify-content-center">
+            {searchField}
+          </div>
+        </div>
+        {loginLink} {registerLink}
+      </div>
+      <div className="d-md-none d-block w-100 px-5 pt-3">
+        <div> {searchField} </div>
+      </div>
     </div>;
   }
 
