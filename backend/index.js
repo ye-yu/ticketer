@@ -4,6 +4,16 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 const SECRET = process.env.SECRET;
 const COOKIE_MAX_AGE = +process.env.COOKIE_MAX_AGE;
+
+const _console_log = console.log;
+const _console_error = console.error;
+console.log = (...args) => {
+  _console_log("[INFO]", ...args);
+};
+console.error = (...args) => {
+  _console_error("[ERROR]", ...args);
+};
+
 const Express = require("express");
 const Session = require("express-session");
 const Users = require("./users.js");
