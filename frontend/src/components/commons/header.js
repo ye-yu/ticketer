@@ -31,7 +31,7 @@ export default class Header extends React.Component {
       <Link to="/">
         <div className="d-flex justify-content-center">
           <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" />
-          <span className="pl-2 pr-1 my-auto h6 d-none d-lg-block">
+          <span className="pl-2 pr-1 my-auto h6">
               Ticketer ≫ <b>{this.props.section}</b>
           </span>
         </div>
