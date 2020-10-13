@@ -2,6 +2,7 @@ import React from 'react';
 import "./header.css";
 import { Link } from "react-router-dom";
 import Collapse from "react-bootstrap/Collapse";
+import LoginForm from "./loginform";
 export default class Header extends React.Component {
 
   constructor(props) {
@@ -71,7 +72,9 @@ export default class Header extends React.Component {
     </a>;
 
     let loginForm = <Collapse in={showLoginForm}>
-      <div id="login-form">Login Form goes here</div>
+      <div>
+        <LoginForm />
+      </div>
     </Collapse>;
 
     let registerLink = <Link to="/register">

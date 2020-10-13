@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Redirect } from "react-router-dom";
 import Header from "../commons/header.js";
 import Requests from "../../requests.js";
+const validate = require("email-validator").validate;
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -60,8 +61,7 @@ export default class Register extends React.Component {
   }
 
   isEmailValid(emailStr) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(emailStr.toLowerCase());
+    return validate(emailStr);
   }
 
   isPasswordValid(pw) {
