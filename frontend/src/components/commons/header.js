@@ -12,7 +12,8 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       profile: null,
-      showLoginForm: false
+      showLoginForm: false,
+      height: 60
     };
   }
 
@@ -84,7 +85,7 @@ export default class Header extends React.Component {
     </Link>;
 
     return <div>
-      <div className="border-bottom border-header shadow-sm d-flex flex-row" style={{height: "70px"}}>
+      <div className="border-bottom border-header shadow-sm d-flex flex-row" style={{height: this.state.height}}>
         {brand}
         <div className="d-none d-md-flex mx-0 my-0 px-5 flex-fill flex-column justify-content-center h-100">
           <div className="d-flex justify-content-center">
