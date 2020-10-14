@@ -45,7 +45,7 @@ export default class Header extends React.Component {
       </Link>
     </div>;
 
-    return <nav className="navbar border-bottom border-header shadow-sm d-flex flex-row justify-content-center">
+    return <nav className="navbar border-bottom border-header shadow-sm d-flex flex-row justify-content-center bg-white">
       {brand}
     </nav>;
 
@@ -61,7 +61,7 @@ export default class Header extends React.Component {
       </div>
     </div>;
 
-    let searchField = <input className="form-control form-control-sm rounded-pill px-3" style={{zIndex: -1}} type="text" placeholder="Search ticket by title or number" />;
+    let searchField = <input className="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />;
 
     const showLoginForm = this.state.showLoginForm;
     let loginLink = <a href="#login-form" className="ml-auto mr-0 my-0 px-2 px-lg-3 h-100 d-flex flex-column justify-content-center h-100" onClick={() => this.setShowLoginForm(!showLoginForm)} aria-controls="login-form" aria-expanded={showLoginForm} >
@@ -88,7 +88,7 @@ export default class Header extends React.Component {
       </div>
     </Link>;
 
-    return <div>
+    return <div className="bg-white">
       <div className="border-bottom border-header shadow-sm d-flex flex-row" style={{height: this.state.height}}>
         {brand}
         <div className="d-none d-md-flex mx-0 my-0 px-5 flex-fill flex-column justify-content-center h-100">
@@ -101,7 +101,7 @@ export default class Header extends React.Component {
         {this.state.profile ? <ProfileBadge name={this.state.profile.name} avatarSmall={this.state.profile.avatarSmall} /> : ""}
       </div>
       {loginForm}
-      <div className="d-md-none d-block w-100 px-5 pt-3">
+      <div className="d-md-none d-block w-100 px-5 pt-3 bg-accent">
         <div> {searchField} </div>
       </div>
     </div>;

@@ -77,7 +77,7 @@ export default class LoginForm extends React.Component {
       </div>
     </form>;
 
-    return <div className="bg-white">
+    return <div className="bg-white border rounded">
       <div className="d-none d-md-block">
         <div className="px-3 py-4 shadow-sm">
           {loginForm}

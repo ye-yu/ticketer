@@ -8,6 +8,10 @@
   border-color: var(--secondary) !important;
 }
 
+.border-danger {
+  border-color: var(--danger) !important;
+}
+
 .hover-light:hover {
   transition: all 0.2s ease;
   background-color: var(--accent) !important;
@@ -23,8 +27,49 @@
   background-color: var(--light) !important;
 }
 
-
 .hover-dark {
   transition: all 0.2s ease;
   background-color: initial !important;
+}
+
+.hover-with-border-primary:hover {
+  transition: all 0.2s ease;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white;
+}
+
+.hover-with-border-primary {
+  transition: all 0.2s ease;
+  background-color: unset;
+  border-color: unset;
+  color: unset;
+}
+
+.hover-with-border-dark:hover {
+  transition: all 0.2s ease;
+  background-color: var(--dark) !important;
+  border-color: var(--dark) !important;
+  color: white;
+}
+
+.hover-with-border-dark {
+  transition: all 0.2s ease;
+  background-color: unset;
+  border-color: unset;
+  color: unset;
+}
+
+.hover-bg-border-danger {
+  transition: all 0.2s ease;
+  border-color: var(--danger) !important;
+  background-color: var(--danger) !important;
+  color: white;
+}
+
+.hover-bg-border-danger:hover {
+  transition: all 0.2s ease;
+  border-color: var(--danger-dark) !important;
+  background-color: var(--danger-dark) !important;
+  color: white;
 }

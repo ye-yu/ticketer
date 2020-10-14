@@ -13,6 +13,8 @@ $danger:        #DD6031;
 $light:         #F9FCFC;
 $dark:          #0C1618;
 $accent:        #EEEEEE;
+$danger-dark:   darken($danger, 10%);
+$primary-dark:  darken($danger, 10%);
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -25,7 +27,9 @@ $theme-colors: map-merge(
     "danger":     $danger,
     "light":      $light,
     "dark":       $dark,
-    "accent":       $accent
+    "accent":     $accent,
+    "danger-dark":     $danger-dark,
+    "primary-dark":     $primary-dark
   ),
   $theme-colors
 );
