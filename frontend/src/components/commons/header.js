@@ -70,11 +70,15 @@ export default class Header extends React.Component {
       </div>
     </a>;
 
-    let loginForm = <Collapse in={showLoginForm}>
-      <div>
-        <LoginForm />
+    let loginForm = <div className="position-relative">
+      <div className="position-absolute" style={{right: "10%", zIndex: 99}}>
+        <Collapse in={showLoginForm}>
+          <div>
+            <LoginForm />
+          </div>
+        </Collapse>
       </div>
-    </Collapse>;
+    </div>;
 
     let registerLink = <Link to="/register">
       <div className="mx-0 my-0 pl-2 pr-3 pl-lg-3 pr-lg-5 h-100 d-flex flex-column justify-content-center h-100">

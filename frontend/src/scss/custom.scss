@@ -12,6 +12,7 @@ $warning:       #D1AC00;
 $danger:        #DD6031;
 $light:         #F9FCFC;
 $dark:          #0C1618;
+$accent:        #EEEEEE;
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -23,7 +24,8 @@ $theme-colors: map-merge(
     "warning":    $warning,
     "danger":     $danger,
     "light":      $light,
-    "dark":       $dark
+    "dark":       $dark,
+    "accent":       $accent
   ),
   $theme-colors
 );
