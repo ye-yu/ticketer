@@ -44,7 +44,7 @@ export default class Home extends React.Component {
           <div className="col px-4">
             <div className="border bg-white border rounded-lg">
               <div className="d-flex flex-column flex-md-row px-3">
-                <div className="h4 mr-md-auto text-center py-3 my-0 d-none d-md-inline ml-3">Activity</div>
+                <div className="h5 mr-md-auto text-center py-3 my-auto d-none d-md-inline ml-3">This Week's Activity</div>
                 <div className="d-flex d-md-inline justify-content-center py-3">
                   {this.props.posts == "hot" ? <ActivityBadge classNameExtra="hover-bg-border-danger rounded-left" title="Hot Ticket" /> :  <ActivityBadge linkTo="/" classNameExtra="hover-with-border-danger rounded-left" title="Hot Ticket" />}
                   {this.props.posts == "top" ? <ActivityBadge classNameExtra="hover-bg-border-primary rounded-0 border-left-0 border-right-0" title="Top Community" /> :  <ActivityBadge linkTo="/top" classNameExtra="hover-with-border-primary rounded-0 border-left-0 border-right-0" title="Top Community" />}
@@ -61,7 +61,7 @@ export default class Home extends React.Component {
               {topic[this.props.posts]}
             </div>
             <div className="bg-white border rounded-lg d-flex flex-column">
-              <div className="h4 border-bottom py-3 text-center bg-light shadow-sm">What do I do?</div>
+              <div className="h6 border-bottom py-2 text-center bg-light shadow-sm">What do I do?</div>
               <div href="#" className="py-1 px-3 small">
                 Vote on a ticket
               </div>
