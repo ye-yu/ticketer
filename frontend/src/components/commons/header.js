@@ -60,7 +60,7 @@ export default class Header extends React.Component {
       </div>
     </div>;
 
-    let searchField = <input className="form-control form-control-sm rounded-pill px-3" type="text" placeholder="Search ticket by title or number" />;
+    let searchField = <input className="form-control form-control-sm rounded-pill px-3" style={{zIndex: -1}} type="text" placeholder="Search ticket by title or number" />;
 
     const showLoginForm = this.state.showLoginForm;
     let loginLink = <a href="#login-form" className="ml-auto mr-0 my-0 px-2 px-lg-3 h-100 d-flex flex-column justify-content-center h-100" onClick={() => this.setShowLoginForm(!showLoginForm)} aria-controls="login-form" aria-expanded={showLoginForm} >
@@ -93,9 +93,7 @@ export default class Header extends React.Component {
         </div>
         {this.state.profile ? "" : loginLink}
         {this.state.profile ? "" : registerLink}
-        {this.state.profile ? <div className="ml-auto d-flex flex-column justify-content-center">
-          <ProfileBadge className="d-flex align-items-center justify-content-center" name={this.state.profile.name} avatarSmall={this.state.profile.avatarSmall} />
-          </div> : ""}
+        {this.state.profile ? <ProfileBadge name={this.state.profile.name} avatarSmall={this.state.profile.avatarSmall} /> : ""}
       </div>
       {loginForm}
       <div className="d-md-none d-block w-100 px-5 pt-3">

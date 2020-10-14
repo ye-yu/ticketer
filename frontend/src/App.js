@@ -9,6 +9,7 @@ import Home from "./components/home";
 import About from "./components/about";
 import Users from "./components/users";
 import Register from "./components/logins/register"
+import LogOut from "./components/logout";
 import NotFound from "./components/notfound"
 
 export default function App() {
@@ -24,6 +25,9 @@ export default function App() {
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/logout">
+            <LogOut />
           </Route>
           <Route exact path="/">
             <Home />

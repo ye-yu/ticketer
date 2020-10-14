@@ -74,5 +74,6 @@ module.exports = {
   Server: new ServerJsonRequest(SERVER_URI),
   register: "register",
   login: "login",
-  session: "session"
+  session: "session",
+  logout: "revoke"
 };
