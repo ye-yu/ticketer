@@ -14,8 +14,8 @@ Here's a few comparisons for Ticketer, [Jira][1], and Fiverr:
 
 Here's the system rule:
   - A client can post a request ticket (e.g. for an artist to draw new a concept art) under a certain community (e.g. a gaming community).
-  - A contributor can claim a request ticket. That means the contributor will work on the ticket as requested.
-  - A request ticket can be claimed by many contributors and will be forked as a progress ticket when it is claimed.
+  - A contributor can fork a request ticket. That means the contributor will work on the ticket as requested.
+  - A request ticket can be forked by many contributors into their own progress ticket.
   - A contributor can fork a progress ticket into a showcase ticket (i.e. the final output of the request ticket).
   - Anyone can bump a stale ticket (a request ticket that has been claim but has shown no progress, or a showcase ticket that is outdated) by paying with their reputation points.
   - Anyone can vote on a ticket to give an extra attention to the ticket.
