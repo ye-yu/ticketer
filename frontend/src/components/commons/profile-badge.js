@@ -2,6 +2,8 @@ import React from "react";
 import Collapse from "react-bootstrap/Collapse";
 
 const DEF_AVT = process.env.PUBLIC_URL + "/def-avt.png";
+const NOTIFICATION = process.env.PUBLIC_URL + "/icons/notification.png";
+const HELP = process.env.PUBLIC_URL + "/icons/help.png";
 
 class CenteredFlex extends React.Component {
   render() {
@@ -33,11 +35,17 @@ export default class ProfileBadge extends React.Component {
   }
 
   render() {
-    return <div className="ml-auto h-100" style={{width: 200}}>
-      <div className="d-flex flex-column justify-content-center w-100 h-100">
-        <a href="#profile-badge" className="d-flex align-items-center justify-content-center" onClick={this.toggleProfileOptions} aria-controls="profile-badge" aria-expanded={this.state.showProfileOptions}>
-          <img src={this.state.avatar} className="rounded-circle" style={{width: 35, height: 35}} />
-          <div className="px-4">
+    return <div className="ml-auto h-100 px-4">
+      <div className="d-flex justify-content-center w-100 h-100">
+        <a href="#profile-badge" className="px-2 d-flex align-items-center justify-content-center hover-light" onClick={this.toggleProfileOptions} aria-controls="profile-badge" aria-expanded={this.state.showProfileOptions}>
+          <img src={HELP} className="rounded-circle" style={{width: 25, height: 25}} />
+        </a>
+        <a href="#profile-badge" className="px-2 d-flex align-items-center justify-content-center hover-light" onClick={this.toggleProfileOptions} aria-controls="profile-badge" aria-expanded={this.state.showProfileOptions}>
+          <img src={NOTIFICATION} className="rounded-circle" style={{width: 25, height: 25}} />
+        </a>
+        <a href="#profile-badge" className="px-2 d-flex align-items-center justify-content-center hover-light" onClick={this.toggleProfileOptions} aria-controls="profile-badge" aria-expanded={this.state.showProfileOptions}>
+          <img src={this.state.avatar} className="rounded-circle" style={{width: 25, height: 25}} />
+          <div className="px-4 d-md-inline d-none">
             {this.props.name}
           </div>
         </a>

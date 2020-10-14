@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +10,14 @@ import Header from "./commons/header";
 export default class Home extends React.Component {
   render() {
     return <div>
-    <Header section="Home" />
-      </div>;
+      <Header section="Home" />
+      <div className="container">
+        <div className="col">
+            
+        </div>
+        <div className="col-3 d-none d-lg-block">
+        </div>
+      </div>
+    </div>;
   }
 }

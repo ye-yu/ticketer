@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
 import Collapse from "react-bootstrap/Collapse";
@@ -37,7 +37,7 @@ export default class Header extends React.Component {
     let brand = <div className="mt-1 py-2 px-3 navbar-brand flex-column justify-content-center">
       <Link to="/">
         <div className="d-flex justify-content-center">
-          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" alt="logo" />
+          <img src={process.env.PUBLIC_URL + "/ticketer.png"} className="logo my-auto" alt="logo" />
           <span className="pl-2 pr-1 my-auto h6">
               Ticketer ≫ <b>{this.props.section}</b>
           </span>
@@ -54,9 +54,9 @@ export default class Header extends React.Component {
   renderMore() {
     let brand = <div className="mx-0 my-0 px-4 px-lg-5 h-100 d-flex flex-column justify-content-center h-100 border-right">
         <div className="d-flex justify-content-center">
-          <img src={process.env.PUBLIC_URL + '/ticketer.png'} className="logo my-auto" alt="logo"/>
+          <img src={process.env.PUBLIC_URL + "/ticketer.png"} className="logo my-auto" alt="logo"/>
           <span className="pl-2 pr-1 my-auto h6">
-              Ticketer ≫ <b>{this.props.section}</b>
+              <span className="d-none d-md-inline">Ticketer ≫ </span> <b>{this.props.section}</b>
           </span>
       </div>
     </div>;

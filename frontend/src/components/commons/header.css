@@ -5,5 +5,15 @@
 
 .border-header {
   border-width: 2px !important;
-  border-color: var(--primary) !important;
+  border-color: var(--secondary) !important;
+}
+
+.hover-light:hover {
+  transition: all 0.2s ease;
+  background-color: #EEE !important;
+}
+
+.hover-light {
+  transition: all 0.2s ease;
+  background-color: unset !important;
 }
