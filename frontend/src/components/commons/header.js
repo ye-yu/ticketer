@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Collapse from "react-bootstrap/Collapse";
 import LoginForm from "./loginform";
 import Requests from "../../requests.js";
+import ProfileBadge from "./profile-badge.js";
 
 export default class Header extends React.Component {
 
@@ -90,8 +91,11 @@ export default class Header extends React.Component {
             {searchField}
           </div>
         </div>
-        {this.state.profile ? "profile" : loginLink}
-        {this.state.profile ? "logout" : registerLink}
+        {this.state.profile ? "" : loginLink}
+        {this.state.profile ? "" : registerLink}
+        {this.state.profile ? <div className="ml-auto d-flex flex-column justify-content-center">
+          <ProfileBadge className="d-flex align-items-center justify-content-center" name={this.state.profile.name} avatarSmall={this.state.profile.avatarSmall} />
+          </div> : ""}
       </div>
       {loginForm}
       <div className="d-md-none d-block w-100 px-5 pt-3">
