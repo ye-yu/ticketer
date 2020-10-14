@@ -1,9 +1,9 @@
 Ticketer
 ---
 
-Ticketer is a ticketing tool similar to Jira and Fiverr but offers their service on community level. Like Fiverr, Ticketer audiences include content-creators (or as Ticketer calls them, contributors) but the contents adhere to the request-showcase ticketing system. This also includes a public platform for publishing requests and a ticket-oriented management system.
+Ticketer is a ticketing tool similar to Jira and Fiverr but offers their service on community level. Like Jira, Ticketer uses a ticketing system to keep track of the request tickets, progress tickets, and showcase tickets. Like Fiverr, Ticketer's audiences include content-creators (or as Ticketer calls them, contributors), but the contents adhere to the request-showcase ticketing system.
 
-Ticketer helps clients voice out their request effectively targeting specific communities and gaining more attention based on their ticket votes. Contributors can also use this platform to display their output from a requested ticket. How to use their content is up to the contributor and their licensing.
+Ticketer helps clients voice out their request effectively by targeting specific communities and gaining more attention based on their ticket votes. They do so by opening up a community request ticket and wait for contributors to fork (or to duplicate) their ticket into a progress ticket. Afterwards, contributors can update their progress ticket while working on it. When they have finally finished their ticket, they will fork their progress ticket into a showcase ticket displaying their output. How to use their content is up to the contributor and their licensing option.
 
 Here's a few comparisons for Ticketer, [Jira][1], and Fiverr:
 
@@ -15,9 +15,9 @@ Here's a few comparisons for Ticketer, [Jira][1], and Fiverr:
 Here's the system rule:
   - A client can post a request ticket (e.g. for an artist to draw new a concept art) under a certain community (e.g. a gaming community).
   - A contributor can claim a request ticket. That means the contributor will work on the ticket as requested.
-  - A request ticket can be claimed by many contributors and will be duplicated as a progress ticket when it is claimed.
-  - A contributor can post a showcase ticket (i.e. the final output of the request ticket).
-  - Anyone can bump a stale ticket (a request ticket that has been claim but has shown no progress, or a showcase ticket that is outdated).
+  - A request ticket can be claimed by many contributors and will be forked as a progress ticket when it is claimed.
+  - A contributor can fork a progress ticket into a showcase ticket (i.e. the final output of the request ticket).
+  - Anyone can bump a stale ticket (a request ticket that has been claim but has shown no progress, or a showcase ticket that is outdated) by paying with their reputation points.
   - Anyone can vote on a ticket to give an extra attention to the ticket.
   - A client will gain reputation points based on the votes on their ticket.
   - A contributor will gain reputation points based on the vote of their output.
