@@ -15,7 +15,7 @@ import NotFound from "./components/notfound"
 export default function App() {
   return (
     <Router>
-      <div className="bg-accent">
+      <div>
         <Switch>
           <Route path="/about">
             <About />
@@ -29,8 +29,14 @@ export default function App() {
           <Route path="/logout">
             <LogOut />
           </Route>
+          <Route path="/top">
+            <Home posts="top" />
+          </Route>
+          <Route path="/controversial">
+            <Home posts="controversial" />
+          </Route>
           <Route exact path="/">
-            <Home />
+            <Home posts="hot" />
           </Route>
           <Route component={NotFound} />
         </Switch>

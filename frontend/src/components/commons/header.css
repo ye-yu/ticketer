@@ -39,13 +39,6 @@
   color: white;
 }
 
-.hover-with-border-primary {
-  transition: all 0.2s ease;
-  background-color: unset;
-  border-color: unset;
-  color: unset;
-}
-
 .hover-with-border-dark:hover {
   transition: all 0.2s ease;
   background-color: var(--dark) !important;
@@ -53,7 +46,21 @@
   color: white;
 }
 
-.hover-with-border-dark {
+.hover-with-border-warning:hover {
+  transition: all 0.2s ease;
+  background-color: var(--warning) !important;
+  border-color: var(--warning) !important;
+  color: white;
+}
+
+.hover-with-border-danger:hover {
+  transition: all 0.2s ease;
+  background-color: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: white;
+}
+
+.hover-with-border-primary, .hover-with-border-dark, .hover-with-border-warning, .hover-with-border-danger {
   transition: all 0.2s ease;
   background-color: unset;
   border-color: unset;
@@ -71,5 +78,33 @@
   transition: all 0.2s ease;
   border-color: var(--danger-dark) !important;
   background-color: var(--danger-dark) !important;
+  color: white;
+}
+
+.hover-bg-border-primary {
+  transition: all 0.2s ease;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.hover-bg-border-primary:hover {
+  transition: all 0.2s ease;
+  border-color: var(--primary-dark) !important;
+  background-color: var(--primary-dark) !important;
+  color: white;
+}
+
+.hover-bg-border-warning {
+  transition: all 0.2s ease;
+  border-color: var(--warning) !important;
+  background-color: var(--warning) !important;
+  color: white;
+}
+
+.hover-bg-border-warning:hover {
+  transition: all 0.2s ease;
+  border-color: var(--warning-dark) !important;
+  background-color: var(--warning-dark) !important;
   color: white;
 }
