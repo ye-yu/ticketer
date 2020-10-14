@@ -112,7 +112,7 @@ export default class Register extends React.Component {
               <small id="notice" className="form-text text-muted text-center py-3">By registering, you agree to the Terms & Conditions and Privacy Policy.</small>
               {error}
               <button type="button" className="btn btn-primary btn-sm btn-block py-2" disabled={this.disableButton()} onClick={this.handleButton}>Submit</button>
-              <button type="button" className="btn btn-outline-primary btn-sm btn-block py-2">Cancel</button>
+              <a href="/" type="button" className="btn btn-outline-primary btn-sm btn-block py-2">Cancel</a>
             </div>
           </div>
 
