@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import Header from "../commons/header.js";
-import Requests from "../../requests.js";
+import Header from "./commons/header.js";
+import Requests from "../requests.js";
 const validate = require("email-validator").validate;
 
 export default class Register extends React.Component {

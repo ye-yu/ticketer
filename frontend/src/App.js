@@ -8,7 +8,7 @@ import {
 import Home from "./components/home";
 import About from "./components/about";
 import Users from "./components/users";
-import Register from "./components/logins/register"
+import Register from "./components/register"
 import LogOut from "./components/logout";
 import NotFound from "./components/notfound"
 
