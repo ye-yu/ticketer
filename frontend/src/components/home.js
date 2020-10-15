@@ -6,6 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import Header from "./commons/header";
+import TicketSmall from "./commons/ticket-small";
 
 const topic = {};
 topic.hot = <small>
@@ -69,6 +70,7 @@ export default class Home extends React.Component {
             <div className="mt-3 px-3 py-3 border bg-white border rounded-lg d-block d-lg-none">
               {topic[this.props.posts]}
             </div>
+            <TicketSmall classNameExtra="mt-3" />
           </div>
         </div>
       </div>
