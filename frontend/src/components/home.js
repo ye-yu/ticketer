@@ -41,6 +41,20 @@ export default class Home extends React.Component {
       <Header section="Home" />
       <div className="container mt-md-5 mt-3">
         <div className="row">
+          <div className="col-3 d-none d-lg-block">
+            <div className="mb-3 px-3 py-3 d-none d-lg-block bg-white border rounded-lg d-flex flex-column text-justify" style={{lineHeight:"1.15rem"}}>
+              {topic[this.props.posts]}
+            </div>
+            <div className="bg-white border rounded-lg d-flex flex-column">
+              <div className="h6 border-bottom py-2 text-center bg-light shadow-sm">What do I do?</div>
+              <div href="#" className="py-1 px-3 small">
+                Vote on a ticket
+              </div>
+              <a href="#" className="d-block pt-1 pb-3 px-3 small">
+                Post your first ticket
+              </a>
+            </div>
+          </div>
           <div className="col px-4">
             <div className="border bg-white border rounded-lg">
               <div className="d-flex flex-column flex-md-row px-3">
@@ -54,20 +68,6 @@ export default class Home extends React.Component {
             </div>
             <div className="mt-3 px-3 py-3 border bg-white border rounded-lg d-block d-lg-none">
               {topic[this.props.posts]}
-            </div>
-          </div>
-          <div className="col-3 d-none d-lg-block">
-            <div className="mb-3 px-3 py-3 d-none d-lg-block bg-white border rounded-lg d-flex flex-column text-justify" style={{lineHeight:"1.15rem"}}>
-              {topic[this.props.posts]}
-            </div>
-            <div className="bg-white border rounded-lg d-flex flex-column">
-              <div className="h6 border-bottom py-2 text-center bg-light shadow-sm">What do I do?</div>
-              <div href="#" className="py-1 px-3 small">
-                Vote on a ticket
-              </div>
-              <a href="#" className="d-block pt-1 pb-3 px-3 small">
-                Post your first ticket
-              </a>
             </div>
           </div>
         </div>
