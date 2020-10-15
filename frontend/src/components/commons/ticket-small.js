@@ -85,13 +85,16 @@ export default class TicketSmall extends React.Component {
     const date = this.props.date || DATE;
     const content = this.props.content || CONTENT_LONG;
     const borderColor = this.props.borderColor || "primary";
-    return <div className={this.props.classNameExtra + " card px-1 px-lg-4"}>
-      <div className="card-body">
+    return <div className={this.props.classNameExtra + " bg-white shadow-sm px-1 px-lg-4 rounded-bottom border-top border-thick border-" + borderColor}>
+      <div className="card-body py-0">
         <div className="container-fluid">
-          <div className={"row border-bottom border-thick border-" + borderColor}>
+          <div className="row border-bottom">
             <div className="col-9 px-0">
-              <h5 className="card-title py-2 text-truncate"><span className="h1 text-muted py-0 pr-2">#{number}</span>{title}</h5>
-              <h6 className="card-subtitle pb-2 mb-2 text-muted">Date: {date}</h6>
+              <h5 className="card-title text-truncate pt-3"><span className="h1 text-muted py-0 pr-2">#{number}</span>{title}</h5>
+              <div className="card-subtitle pb-1 mb-2 small">
+                <span className="text-muted">Date</span> {date}
+                <span className="pl-1 pl-lg-5 text-muted">Author</span> "NULL"
+              </div>
             </div>
             <div className="col d-flex flex-column align-items-end">
               <img className="mt-auto" src={this.state.mouseEnterArrowUp || this.state.selection == SELECTED_UP ? ARROW.up.active : ARROW.up.normal} style={{width: 15, height: 15}} onMouseEnter={this.enterArrowUp} onMouseLeave={this.resetArrow} onClick={this.selectUpArrow} />
@@ -100,9 +103,9 @@ export default class TicketSmall extends React.Component {
             </div>
           </div>
         </div>
-        <div className={(this.state.expand ? "" : "limit-height") + " card-text pt-4 mb-0"}>{content}</div>
-        <div className="text-center">...</div>
+        <div className={(this.state.expand ? "" : "limit-height") + " card-text pt-4"} style={{fontSize: "0.9rem"}}>{content}</div>
       </div>
+      <div className="text-center h2 py-0">...</div>
     </div>;
   }
 }
