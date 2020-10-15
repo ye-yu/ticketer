@@ -25,6 +25,12 @@ topic.controversial = <small>
   Go ahead and study what does the community consider as a bad ticket.
 </small>;
 
+const topicBorder = {
+  hot: "danger",
+  top: "primary",
+  controversial: "warning"
+}
+
 class ActivityBadge extends React.Component {
   render() {
     if (this.props.linkTo) return <a href={this.props.linkTo} className={this.props.classNameExtra + " d-inline-block border px-3 py-2 small"}>
@@ -70,7 +76,7 @@ export default class Home extends React.Component {
             <div className="mt-3 px-3 py-3 border bg-white border rounded-lg d-block d-lg-none">
               {topic[this.props.posts]}
             </div>
-            <TicketSmall classNameExtra="mt-3" />
+            <TicketSmall classNameExtra="mt-3" borderColor={topicBorder[this.props.posts]} />
           </div>
         </div>
       </div>

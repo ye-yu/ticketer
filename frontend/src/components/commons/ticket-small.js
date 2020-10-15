@@ -1,4 +1,5 @@
 import React from "react";
+import "./ticket-small.css";
 
 const TITLE = "DUMMY TICKET DUMMY TICKET DUMMY TICKET DUMMY TICKET";
 const NUMBER = "-1";
@@ -26,7 +27,8 @@ export default class TicketSmall extends React.Component {
     this.state = {
       mouseEnterArrowUp: false,
       mouseEnterArrowDown: false,
-      selection: SELECTED_NONE
+      selection: SELECTED_NONE,
+      expand: false
     }
 
     this.enterArrowUp = this.enterArrowUp.bind(this);
@@ -82,10 +84,11 @@ export default class TicketSmall extends React.Component {
     const comments = this.props.comments || COMMENTS;
     const date = this.props.date || DATE;
     const content = this.props.content || CONTENT_LONG;
+    const borderColor = this.props.borderColor || "primary";
     return <div className={this.props.classNameExtra + " card px-1 px-lg-4"}>
       <div className="card-body">
         <div className="container-fluid">
-          <div className="row border-bottom">
+          <div className={"row border-bottom border-thick border-" + borderColor}>
             <div className="col-9 px-0">
               <h5 className="card-title py-2 text-truncate"><span className="h1 text-muted py-0 pr-2">#{number}</span>{title}</h5>
               <h6 className="card-subtitle pb-2 mb-2 text-muted">Date: {date}</h6>
@@ -97,7 +100,8 @@ export default class TicketSmall extends React.Component {
             </div>
           </div>
         </div>
-        <p className="card-text">{content}</p>
+        <div className={(this.state.expand ? "" : "limit-height") + " card-text pt-4 mb-0"}>{content}</div>
+        <div className="text-center">...</div>
       </div>
     </div>;
   }

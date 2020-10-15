@@ -8,6 +8,18 @@
   border-color: var(--secondary) !important;
 }
 
+.border-thick {
+  border-width: 3px !important;
+}
+
+.border-warning {
+  border-color: var(--warning) !important;
+}
+
+.border-primary {
+  border-color: var(--primary) !important;
+}
+
 .border-danger {
   border-color: var(--danger) !important;
 }

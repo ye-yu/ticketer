@@ -1,0 +1,8 @@
+.limit-height {
+  max-height: 150px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow-y: hidden;
+  text-overflow: ellipsis !important;
+}
